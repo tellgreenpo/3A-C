@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+//1. int ** M ==> tableau de pointeurs
+//3. Aucune difference
+//4. Dans le premier cas les elements sont a la suite dans la memoire alors que dans le
+// 2eme cas les autres pointeurs colone pointent autre part dans la memoire
+
+int saisie2(int lenline, int lencol, int ** M){
+  for(int i=0;i<lenline;i++){
+    for(int j=0;j<lencol;j++){
+      printf("entrez un int pour en %d %d",i,j);
+      scanf("%d",&M[i][j]);
+    };
+  };
+  return 0;
+};
+
+int saisie2p(int lenline, int lencol, int ** M){
+  for(int i=0;i<lenline;i++){
+    for(int j=0;j<lencol;j++){
+      printf("entrez un int svp");
+      scanf("%d",*(M+i)+j);
+    };
+  };
+  return 0;
+};
+
+int affiche2(int lenline, int lencol, int ** M){
+  for(int i=0;i<lenline;i++){
+    for(int j=0;j<lencol;j++){
+      printf("%d ",M[i][j]);
+    };
+  };
+  return 0;
+};
+
+void init(int ligne, int colonne, int *** pM){
+  *pM = (int **)malloc(ligne*sizeof(int *)); //(int **) est facultatif mais c'est mieux
+  for (int i = 0;i<ligne;i++){
+    (*pM)[i]= (int*)malloc(colonne*sizeof(int));
+  };
+};
+
+
+int main(){
+  int lenline = 2;
+  int lencol = 3;
+  int ** M;
+  init(lenline,lencol,&M);
+  saisie2(lenline,lencol,M);
+  affiche2(lenline,lencol,M);
+  free(M);
+  return 0;
+};

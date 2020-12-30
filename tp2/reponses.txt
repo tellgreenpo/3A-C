@@ -1,0 +1,2 @@
+1. il faut connaitrele nombre de colonnes pour savoir a quelle ligne on se trouve, l'adresse du premiere element de la matrice, taille des elements
+2. Sur le code

@@ -1,0 +1,113 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+struct cellule{
+  int i;
+  struct cellule *suiv;
+};
+
+struct pile{
+  struct cellule * deb;
+  int taille;
+};
+
+struct pile * init(){
+  struct pile *ppile;
+  ppile = malloc(sizeof(struct pile));
+  ppile->deb = NULL;
+  ppile->taille = 0;
+  return ppile;
+};
+
+void add(struct pile * ppile, int element){
+  if (ppile->deb == NULL) {
+      ppile->deb = malloc(sizeof(struct cellule));
+      ppile->deb->i = element;
+      ppile->deb->suiv =NULL;
+  }else{
+    struct cellule * cell;
+    cell = malloc(sizeof(struct cellule));
+    cell->i = element;
+    cell->suiv = ppile->deb;
+    ppile->deb = cell;
+  };
+  ppile->taille = ppile->taille +1;
+};
+
+int depiler(struct pile * ppile){
+  int recup = 0;
+  if (ppile->deb != NULL){
+    struct cellule * aux;
+    aux = ppile->deb;
+    recup = ppile->deb->i;
+    ppile->deb = ppile->deb->suiv;
+    free(aux);
+    ppile->taille = ppile->taille -1;
+  };
+  return recup;
+};
+
+void affiche(struct pile * ppile){
+  struct cellule * mark;
+  mark = ppile->deb;
+  while (mark != NULL){
+    printf("%d ",mark->i);
+    mark = mark->suiv;
+  };
+};
+
+typedef struct programme{
+  char **tokens;
+  int taille;
+}Programme;
+
+int numberOfDelimiters(char * string){
+  int count =0;
+  for (int i=0;i<strlen(string);i++){
+    if (string[i] == ' '){
+      count++;
+    };
+  };
+  return count;
+};
+
+Programme * lexer(char * chaine){
+  char *token, *str;
+  str = strdup(chaine);
+  int i =0;
+  int arraysize = (numberOfDelimiters(str)+1);
+  char ** programme = (char **)malloc(sizeof(char*)*arraysize);
+  while ( (token = strsep(&str, " "))){
+    programme[i] = token;
+    i++;
+  };
+  Programme *retour = (Programme*)malloc(sizeof(Programme));
+  retour -> tokens = programme;
+  retour -> taille = i;
+  return retour;
+};
+
+void affiche_token(char ** chaine, int taille){
+  for(int i =0; i<taille; i++){
+    printf("TOKEN : %s \n",chaine[i]);
+  };
+};
+
+
+
+
+
+
+
+
+
+
+
+int main(int argc, char * argv[1]){
+  char * chaine = argv[1];
+  Programme * prog = lexer(chaine);
+  affiche_token(prog-> tokens, prog->taille);
+  return 0;
+};
